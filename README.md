@@ -3,7 +3,7 @@
 
 - 🌱 Atualmente estou aprendendo **Python, automações e análise de dados**
 
-- 💬 Me pergunte sobre **Python, SQL, JAVA**
+- 💬 Me pergunte sobre **Python, SQL server, JAVA**
 
 - 📫 Você me acha através do e-mail **roberthsantana07@gmail.com**
 
