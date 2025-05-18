@@ -20,7 +20,7 @@ Atualmente trabalho com **análise de dados**, **big data**, **RPA** e **desenvo
 
 
 ## **Entre em contato comigo**  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/roberthsantana/)  [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:roberthsantana07@gmail.com)  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/roberthsilva)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/roberthsantana/)  [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:roberthsantana07@gmail.com)  [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/_roberthsilva)
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=16&pause=1000&color=FF00FF&width=600&separator=%3C&lines=x+%3D+10;+x()+%E2%86%92+%22TypeError%22+cl%C3%A1ssico+%3Cwhile+True%3A+print(%22Ctrl%2BC%22)+%E2%86%92+Mantra+di%C3%A1rio%3Ctry%3A+algo();+except%3A+pass+%E2%86%92+Debug+profissional%3C__init__+%E2%86%92+M%C3%A9todo+que+todos+copiam+e+ningu%C3%A9m+entende%3CList+comprehension+%E2%86%92+C%C3%B3digo+%22limpo%22+(ileg%C3%ADvel)%3Cprint(%22Cheguei+aqui%22)+%E2%86%92+Debug+cient%C3%ADfico%3Cgit+commit+-m+%22fix%22+%E2%86%92+Que+fix%3F+Deus+sabe...%3C%22%C3%89+s%C3%B3+um+script+r%C3%A1pido%22+%E2%86%92+300+linhas+depois...)](https://git.io/typing-svg)
 
