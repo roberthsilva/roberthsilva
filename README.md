@@ -1,7 +1,7 @@
 # Olá, eu sou Roberth!   
 
 **Sobre Mim:**  
-Com 18 anos, mergulhei no mundo da programação criando minhas primeiras automações em Python e, desde então, não parei mais! 
+Com 18 anos, mergulhei no mundo da programação criando minhas primeiras automações em Python e, desde então, venho me aprofundando na área! 
 
 Atualmente trabalho com **análise de dados**, **big data**, **RPA** e **desenvolvimento de APIs**, sempre buscando otimizar processos e extrair insights valiosos, uso no meu dia a dia linguagens que não consigo mais viver sem, o `SQL` e o `Python` unido a suas frameworks que são indispensáveis no ambiente de trabalho.
 
