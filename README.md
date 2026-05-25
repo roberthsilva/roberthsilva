@@ -8,7 +8,7 @@ críticos, análise exploratória de dados e desenvolvimento de soluções orien
 consistência e geração de valor para o negócio. Experiência com APIs REST, modelagem e
 automação de rotinas analíticas voltadas à eficiência operacional.
 
-## Linguagens & Ferramentas
+# Linguagens & Ferramentas
 
 ![Python](https://img.shields.io/badge/Python-212121?style=for-the-badge&logo=python&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-212121?style=for-the-badge&logo=sqlite&logoColor=white)
