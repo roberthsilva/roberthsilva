@@ -249,17 +249,24 @@
   window.addEventListener('resize', resize);
   resize();
 
-  var count = Math.min(140, Math.floor((window.innerWidth*window.innerHeight)/7000));
+  var sprites = [new Image(), new Image()];
+  sprites[0].src = 'assets/img/snowflake1.png';
+  sprites[1].src = 'assets/img/snowflake2.png';
+
+  var count = Math.min(70, Math.floor((window.innerWidth*window.innerHeight)/13000));
   flakes = [];
   for(var i=0;i<count;i++){
     flakes.push({
       x: Math.random()*W,
       y: Math.random()*H,
-      r: Math.random()*3.2 + 1.6,
+      s: Math.random()*20 + 14,
       spd: Math.random()*1.1 + 0.5,
       drift: Math.random()*0.6 - 0.3,
       phase: Math.random()*Math.PI*2,
-      op: Math.random()*0.4 + 0.55
+      op: Math.random()*0.35 + 0.55,
+      rot: Math.random()*Math.PI*2,
+      rotSpd: (Math.random()*0.6 - 0.3) * 0.012,
+      sprite: sprites[i % 2]
     });
   }
 
@@ -270,28 +277,19 @@
       f.y += f.spd;
       f.phase += 0.02;
       f.x += Math.sin(f.phase) * 0.4 + f.drift*0.2;
-      if(f.y > H + 5){ f.y = -5; f.x = Math.random()*W; }
-      if(f.x > W + 5) f.x = -5;
-      if(f.x < -5) f.x = W + 5;
+      f.rot += f.rotSpd;
+      if(f.y > H + f.s){ f.y = -f.s; f.x = Math.random()*W; }
+      if(f.x > W + f.s) f.x = -f.s;
+      if(f.x < -f.s) f.x = W + f.s;
 
+      if(!f.sprite.complete || f.sprite.naturalWidth === 0) continue;
+
+      ctx.save();
       ctx.globalAlpha = f.op;
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-      ctx.fillStyle = '#bcd6ee';
-      ctx.fill();
-
-      ctx.globalAlpha = f.op * 0.9;
-      ctx.beginPath();
-      ctx.arc(f.x - f.r*0.3, f.y - f.r*0.3, f.r*0.42, 0, Math.PI*2);
-      ctx.fillStyle = '#ffffff';
-      ctx.fill();
-
-      ctx.globalAlpha = f.op * 0.6;
-      ctx.lineWidth = 0.6;
-      ctx.strokeStyle = '#8fb8de';
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-      ctx.stroke();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(f.rot);
+      ctx.drawImage(f.sprite, -f.s/2, -f.s/2, f.s, f.s);
+      ctx.restore();
     }
     ctx.globalAlpha = 1;
     requestAnimationFrame(tick);
