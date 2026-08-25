@@ -1,8 +1,10 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Brand Collection Atacado</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<script src="data.js"></script>
 
 <style>
   :root{
@@ -12,6 +14,9 @@
     --graphite: #5c5c5c;
     --hairline: #e2e0dc;
     --hairline-strong: #0d0d0d;
+    --ok: #2f7a4f;
+    --warn: #9c5a10;
+    --warn-bg: #fbf0e0;
 
     --font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
@@ -62,465 +67,452 @@
     margin: 0 auto;
     padding-inline: clamp(1.25rem, 4vw, 3rem);
   }
+  .wrap-wide{
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-inline: clamp(1.1rem, 3.5vw, 2.6rem);
+  }
 
-  a:focus-visible, button:focus-visible{
+  a:focus-visible, button:focus-visible, input:focus-visible{
     outline: 2px solid var(--ink);
     outline-offset: 3px;
   }
 
-  /* ---------- scroll progress ---------- */
   .progress{
-    position: fixed;
-    top: 0; left: 0;
-    height: 2px;
-    width: 0%;
-    background: var(--ink);
-    z-index: 100;
-    transition: width 0.08s linear;
+    position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+    background: var(--ink); z-index: 100; transition: width 0.08s linear;
   }
 
-  /* ---------- reveal on scroll ---------- */
   .reveal{
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
     transition-delay: var(--d, 0ms);
   }
-  .reveal.is-visible{
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0); }
 
-  /* ---------- header ---------- */
   header{
-    position: sticky;
-    top: 0;
-    z-index: 40;
+    position: sticky; top: 0; z-index: 40;
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--hairline);
   }
   .nav{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 1.15rem;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-block: 1.1rem;
   }
   .mark{
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.98rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    color: var(--ink);
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: clamp(.82rem,2.4vw,.98rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    text-decoration: none; color: var(--ink); white-space: nowrap;
   }
-  .mark .dot{
-    width: 6px; height: 6px;
-    background: var(--ink);
-  }
+  .mark .dot{ width: 6px; height: 6px; background: var(--ink); flex-shrink:0; }
   .mark .sub{ font-weight: 400; color: var(--graphite); }
   .nav-links{
-    display: flex;
-    align-items: center;
-    gap: clamp(1.1rem, 2.5vw, 2.2rem);
-    font-size: 0.78rem;
+    display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2.2rem); font-size: 0.78rem;
   }
   .nav-links a:not(.btn){
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink);
-    padding-bottom: 3px;
+    position: relative; text-decoration: none; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--ink); padding-bottom: 3px;
   }
   .nav-links a:not(.btn)::after{
-    content: "";
-    position: absolute;
-    left: 0; right: 100%;
-    bottom: 0;
-    height: 1px;
-    background: var(--ink);
-    transition: right 0.3s var(--ease);
+    content: ""; position: absolute; left: 0; right: 100%; bottom: 0;
+    height: 1px; background: var(--ink); transition: right 0.3s var(--ease);
   }
   .nav-links a:not(.btn):hover::after{ right: 0; }
   .nav-links .hide-mobile{ display: inline; }
   @media (max-width: 680px){ .nav-links .hide-mobile{ display: none; } }
+  .nav-links .btn .short{ display: none; }
+  @media (max-width: 420px){
+    .nav-links .btn .full{ display: none; }
+    .nav-links .btn .short{ display: inline; }
+    .nav-links .btn{ padding: 0.85rem 1rem; }
+  }
 
-  /* ---------- buttons ---------- */
   .btn{
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.9rem 1.7rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    text-decoration: none;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    isolation: isolate;
+    position: relative; display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.85rem 1.5rem; font-size: 0.76rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.14em; text-decoration: none; cursor: pointer; white-space: nowrap;
+    overflow: hidden; isolation: isolate;
     transition: color 0.4s var(--ease), border-color 0.4s var(--ease), transform 0.3s var(--ease);
   }
   .btn::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.45s var(--ease);
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease);
   }
-  .btn .arrow{
-    transition: transform 0.35s var(--ease);
-  }
+  .btn .arrow{ transition: transform 0.35s var(--ease); }
   .btn:hover .arrow{ transform: translateX(5px); }
   .btn:hover{ transform: translateY(-1px); }
-
-  .btn-primary{
-    background: var(--ink);
-    color: var(--paper);
-    border: 1px solid var(--ink);
-  }
+  .btn-primary{ background: var(--ink); color: var(--paper); border: 1px solid var(--ink); }
   .btn-primary::before{ background: var(--paper); }
   .btn-primary:hover{ color: var(--ink); }
   .btn-primary:hover::before{ transform: scaleX(1); }
-
-  .btn-outline{
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--ink);
-  }
+  .btn-outline{ background: transparent; color: var(--ink); border: 1px solid var(--ink); }
   .btn-outline::before{ background: var(--ink); }
   .btn-outline:hover{ color: var(--paper); }
   .btn-outline:hover::before{ transform: scaleX(1); }
 
-  /* ---------- hero ---------- */
-  .hero{
-    position: relative;
-    padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(3rem, 7vw, 5rem);
-  }
-  .hero-inner{
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-  @media (max-width: 860px){ .hero-inner{ grid-template-columns: 1fr; } }
+  .hero{ position: relative; padding-block: clamp(2.2rem, 5vw, 3.4rem) clamp(1.8rem, 4vw, 2.6rem); }
+  .hero-copy{ max-width: 780px; }
+  .hero h1{ font-size: clamp(2.1rem, 5.6vw, 4rem); line-height: 1.08; font-weight: 250; margin-top: 1rem; text-wrap: balance; }
+  .hero h1 em{ font-style: italic; font-weight: 300; }
+  .hero p.lead{ margin-top: 1.3rem; max-width: 52ch; font-size: 1.02rem; color: var(--graphite); }
+  .hero-cta{ display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.8rem; }
+  .hero-note{ margin-top: 1.9rem; display: flex; align-items: center; gap: 0.8rem; font-size: 0.8rem; color: var(--graphite); }
+  .hero-note .line{ width: 32px; height: 1px; background: var(--ink); flex-shrink:0; }
 
-  .hero h1{
-    font-size: clamp(2.6rem, 6vw, 4.8rem);
-    line-height: 1.04;
-    font-weight: 250;
-    margin-top: 1rem;
-  }
-  .hero h1 em{
-    font-style: italic;
-    font-weight: 300;
-  }
-  .hero p.lead{
-    margin-top: 1.5rem;
-    max-width: 44ch;
-    font-size: 1.05rem;
-    color: var(--graphite);
-    font-weight: 400;
-  }
-  .hero-cta{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.9rem;
-    margin-top: 2.2rem;
-  }
-  .hero-figure{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .hero-figure svg{ width: min(300px, 78vw); height: auto; }
-  .hero-figure.parallax{ transition: transform 0.05s linear; will-change: transform; }
-
-  .hero-note{
-    margin-top: 2.6rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.82rem;
-    color: var(--graphite);
-  }
-  .hero-note .line{ width: 32px; height: 1px; background: var(--ink); }
-
-  /* ---------- marquee ---------- */
   .marquee{
-    border-block: 1px solid var(--hairline);
-    background: var(--stone);
-    overflow: hidden;
-    padding-block: 0.9rem;
+    position: sticky; top: 0; z-index: 40;
+    border-bottom: 1px solid var(--hairline); background: var(--stone); overflow: hidden; padding-block: 0.75rem;
   }
-  .marquee-track{
-    display: flex;
-    width: max-content;
-    animation: marquee 32s linear infinite;
-  }
+  .marquee-track{ display: flex; width: max-content; animation: marquee 32s linear infinite; }
   .marquee:hover .marquee-track{ animation-play-state: paused; }
-  @keyframes marquee{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
-  }
+  @keyframes marquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
   .marquee-item{
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
-    padding-inline: 1.4rem;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--ink);
-    font-weight: 600;
-    white-space: nowrap;
+    display: flex; align-items: center; gap: 1.2rem; padding-inline: 1.2rem;
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink);
+    font-weight: 600; white-space: nowrap;
   }
   .marquee-item .sep{ color: var(--hairline-strong); opacity: 0.4; }
 
-  /* ---------- section shell ---------- */
-  section{ padding-block: clamp(4rem, 8vw, 7rem); }
-  .section-head{
-    max-width: 620px;
-    margin-bottom: clamp(2.6rem, 5vw, 3.6rem);
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .section-head .idx{
-    font-size: 0.78rem;
-    color: var(--graphite);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-  }
-  .section-head h2{
-    font-size: clamp(1.9rem, 3.6vw, 2.6rem);
-    font-weight: 250;
-  }
-  .section-sub{
-    margin-top: 0.9rem;
-    color: var(--graphite);
-    font-size: 1rem;
-    max-width: 55ch;
-  }
+  section{ padding-block: clamp(3.2rem, 7vw, 6rem); }
+  .section-head{ max-width: 640px; margin-bottom: clamp(1.8rem, 4vw, 2.6rem); display: flex; align-items: baseline; gap: 1rem; }
+  .section-head .idx{ font-size: 0.78rem; color: var(--graphite); font-weight: 600; }
+  .section-head h2{ font-size: clamp(1.7rem, 3.4vw, 2.5rem); font-weight: 250; }
+  .section-sub{ margin-top: 0.8rem; color: var(--graphite); font-size: 0.98rem; max-width: 60ch; }
 
-  /* ---------- category grid ---------- */
-  .cat-grid{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--hairline);
-    border-left: 1px solid var(--hairline);
+  /* ---------- catalog controls ---------- */
+  .catalog-controls{
+    display: flex; gap: .9rem; align-items: center; flex-wrap: wrap;
+    padding-block: 1rem 1.2rem;
   }
-  @media (max-width: 980px){ .cat-grid{ grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px){ .cat-grid{ grid-template-columns: 1fr; } }
+  .search-box{
+    flex: 1; min-width: 220px; display: flex; align-items: center; gap: .6rem;
+    border-bottom: 1px solid var(--ink); padding: .5rem .1rem;
+  }
+  .search-box svg{ width: 15px; height: 15px; color: var(--graphite); flex-shrink: 0; }
+  .search-box input{
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--ink); font-family: var(--font); font-size: .92rem;
+  }
+  .search-box input::placeholder{ color: #a3a3a3; }
+  .stock-toggle{
+    display: flex; align-items: center; gap: .5rem; font-size: .74rem; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--graphite); white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  .stock-toggle input{ accent-color: var(--ink); width: 14px; height: 14px; }
 
-  .cat-card{
-    position: relative;
-    border-right: 1px solid var(--hairline);
-    border-bottom: 1px solid var(--hairline);
-    padding: 2.2rem 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    min-height: 260px;
-    transition: background 0.4s var(--ease);
+  .filters{
+    display: flex; flex-wrap: wrap; gap: .55rem;
+    padding-bottom: 1.6rem;
   }
-  .cat-card:hover{ background: var(--stone); }
-  .cat-card:hover .cat-icon{ transform: translateY(-4px); }
-  .cat-num{
-    font-size: 0.74rem;
-    color: var(--graphite);
-    font-weight: 600;
+  .filter-chip{
+    display: flex; align-items: center; gap: .5rem;
+    padding: .5rem .85rem .5rem .6rem;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    cursor: pointer;
+    transition: all .2s ease;
+    font-family: var(--font);
+    scroll-snap-align: start;
   }
-  .cat-icon{
-    width: 44px; height: 44px;
-    color: var(--ink);
-    transition: transform 0.4s var(--ease);
+  .filter-chip svg{ width: 20px; height: 20px; color: var(--ink); flex-shrink: 0; }
+  .filter-chip span{
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--ink);
+    white-space: nowrap;
   }
-  .cat-card h3{
-    font-size: 1.05rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+  .filter-chip em{
+    font-style: normal; font-size: .66rem; color: var(--graphite);
   }
-  .cat-card p{
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--graphite);
-    line-height: 1.55;
-  }
-  .cat-tag{
-    margin-top: auto;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .cat-tag::before{ content:""; width: 14px; height: 1px; background: var(--ink); }
+  .filter-chip:hover{ border-color: var(--ink); }
+  .filter-chip.active{ background: var(--ink); border-color: var(--ink); }
+  .filter-chip.active svg{ color: var(--paper); }
+  .filter-chip.active span{ color: var(--paper); }
+  .filter-chip.active em{ color: #c9c9c9; }
 
-  /* ---------- why us ---------- */
-  .why{
-    background: var(--stone);
-    border-block: 1px solid var(--hairline);
+  .count-line{ font-size: .76rem; text-transform: uppercase; letter-spacing: .1em; color: var(--graphite); padding-bottom: 1rem; }
+  #result-count{ color: var(--ink); font-weight: 700; }
+
+  .grid{
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1px; background: var(--hairline); border: 1px solid var(--hairline);
   }
-  .why-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .card{
+    content-visibility: auto; contain-intrinsic-size: 220px;
+    background: var(--paper); overflow: hidden; display: flex; flex-direction: column;
+    transition: background .2s ease;
   }
+  .card:hover{ background: var(--stone); }
+  .card .thumb-wrap{ position: relative; aspect-ratio: 1; background: var(--stone); overflow: hidden; }
+  .card img{ width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .card:hover img{ transform: scale(1.04); }
+  .badge{
+    position: absolute; top: .35rem; left: .35rem; font-size: .58rem; text-transform: uppercase;
+    letter-spacing: .07em; padding: .18rem .45rem; font-weight: 700;
+  }
+  .badge.off{ background: var(--ink); color: var(--paper); }
+  .badge.esgotado{
+    top: auto; bottom: .35rem; left: .35rem; background: rgba(255,255,255,0.92);
+    color: var(--ink); border: 1px solid var(--ink);
+  }
+  .card.is-esgotado .thumb-wrap img{ opacity: .4; filter: grayscale(1); }
+  .card-body{ padding: .6rem .65rem .7rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
+  .card-name{
+    font-size: .75rem; line-height: 1.35; color: var(--ink);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    min-height: 2.05em;
+  }
+  .card-price-row{ margin-top: .1rem; display: flex; align-items: baseline; gap: .35rem; flex-wrap: wrap; }
+  .card-price{ font-size: .88rem; font-weight: 600; color: var(--ink); }
+  .card-old-price{ font-size: .68rem; color: #a3a3a3; text-decoration: line-through; }
+
+  .add-to-cart{
+    margin-top: .5rem; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: .4rem;
+    padding: .48rem .5rem;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    font-family: var(--font); font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+    cursor: pointer; transition: all .18s ease;
+  }
+  .add-to-cart:hover{ background: var(--paper); color: var(--ink); }
+  .add-to-cart svg{ width: 13px; height: 13px; }
+  .add-to-cart.added{ background: var(--ok, #2f7a4f); border-color: var(--ok, #2f7a4f); color: #fff; }
+  .add-to-cart:disabled{ opacity: .4; cursor: not-allowed; background: var(--paper); color: var(--graphite); }
+
+  .empty-state{ text-align: center; padding: 4rem 1rem; color: var(--graphite); }
+  .empty-state h3{ font-size: 1.2rem; color: var(--ink); margin-bottom: .5rem; font-weight: 400; }
+
+  .why{ background: var(--stone); border-block: 1px solid var(--hairline); }
+  .why-grid{ display: grid; grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 820px){ .why-grid{ grid-template-columns: 1fr; } }
-  .why-item{
-    padding: 1.6rem 2rem 1.6rem 0;
-    border-left: 1px solid var(--hairline);
-    padding-left: 2rem;
-  }
+  .why-item{ padding: 1.6rem 2rem 1.6rem 0; border-left: 1px solid var(--hairline); padding-left: 2rem; }
   @media (max-width: 820px){
     .why-item{ border-left: none; border-top: 1px solid var(--hairline); padding: 1.8rem 0; }
     .why-item:first-child{ border-top: none; }
   }
-  .why-num{
-    font-size: 2.2rem;
-    font-weight: 200;
-    color: var(--graphite);
-    display: block;
-    margin-bottom: 0.9rem;
-  }
-  .why-item h3{
-    font-weight: 500;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0 0 0.6rem;
-  }
-  .why-item p{
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--graphite);
-    line-height: 1.6;
-  }
+  .why-num{ font-size: 2.2rem; font-weight: 200; color: var(--graphite); display: block; margin-bottom: .9rem; }
+  .why-item h3{ font-weight: 500; font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 .6rem; }
+  .why-item p{ margin: 0; font-size: .92rem; color: var(--graphite); line-height: 1.6; }
 
-  /* ---------- social proof ---------- */
-  .social{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
+  .social{ display: grid; grid-template-columns: 0.85fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
   @media (max-width: 860px){ .social{ grid-template-columns: 1fr; } }
-  .ig-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--hairline);
-    border: 1px solid var(--hairline);
+
+  .phone-stage{
+    display: flex; justify-content: center; padding-block: 1rem;
+    perspective: 1400px;
   }
-  .ig-cell{
-    aspect-ratio: 1;
-    background: var(--paper);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink);
-    transition: background 0.35s var(--ease), transform 0.35s var(--ease);
+  .phone-mockup{
+    position: relative;
+    width: min(240px, 62vw);
+    aspect-ratio: 9 / 19.5;
+    background: var(--ink);
+    border-radius: 34px;
+    padding: 10px;
+    box-shadow:
+      0 40px 60px -25px rgba(13,13,13,0.45),
+      0 10px 20px -8px rgba(13,13,13,0.3);
+    transform: rotateY(-16deg) rotateX(6deg) rotateZ(1deg);
+    transition: transform .5s var(--ease);
+    animation: phoneFloat 6s ease-in-out infinite;
   }
-  .ig-cell:hover{ background: var(--ink); color: var(--paper); }
-  .ig-cell svg{ width: 30%; height: 30%; }
-  .social h2{ font-size: clamp(1.9rem, 3.6vw, 2.5rem); font-weight: 250; }
+  .phone-stage:hover .phone-mockup{ transform: rotateY(-6deg) rotateX(3deg) rotateZ(0deg); }
+  @keyframes phoneFloat{
+    0%, 100%{ transform: rotateY(-16deg) rotateX(6deg) rotateZ(1deg) translateY(0); }
+    50%{ transform: rotateY(-16deg) rotateX(6deg) rotateZ(1deg) translateY(-10px); }
+  }
+  @media (prefers-reduced-motion: reduce){ .phone-mockup{ animation: none; } }
+  .phone-notch{
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 34%; height: 18px; background: var(--ink); border-radius: 0 0 12px 12px; z-index: 2;
+  }
+  .phone-video{
+    width: 100%; height: 100%; object-fit: cover; border-radius: 26px; background: #000;
+    display: block;
+  }
+  .social h2{ font-size: clamp(1.8rem, 3.4vw, 2.4rem); font-weight: 250; }
   .social p{ color: var(--graphite); margin-top: 1rem; max-width: 46ch; }
   .handle{
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin-top: 1.8rem;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
+    display: inline-flex; align-items: center; gap: .55rem; margin-top: 1.7rem; font-size: .82rem;
+    text-transform: uppercase; letter-spacing: .1em; font-weight: 600; color: var(--ink); text-decoration: none;
   }
-  .handle .arrow{ transition: transform 0.35s var(--ease); }
+  .handle .arrow{ transition: transform .35s var(--ease); }
   .handle:hover .arrow{ transform: translateX(6px); }
 
-  /* ---------- final cta (inverted) ---------- */
-  .cta-band{
-    background: var(--ink);
-    color: var(--paper);
-    text-align: center;
-  }
+  .cta-band{ background: var(--ink); color: var(--paper); text-align: center; }
   .cta-band .eyebrow{ color: #9a9a9a; }
-  .cta-band h2{
-    font-size: clamp(2rem, 4.4vw, 3.2rem);
-    font-weight: 250;
-    color: var(--paper);
-  }
-  .cta-band p{
-    color: #b8b8b8;
-    max-width: 50ch;
-    margin: 1.1rem auto 0;
-  }
-  .cta-actions{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2.2rem;
-  }
-  .cta-band .btn-primary{
-    background: var(--paper);
-    color: var(--ink);
-    border-color: var(--paper);
-  }
+  .cta-band h2{ font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 250; color: var(--paper); }
+  .cta-band p{ color: #b8b8b8; max-width: 50ch; margin: 1rem auto 0; }
+  .cta-actions{ display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .cta-band .btn-primary{ background: var(--paper); color: var(--ink); border-color: var(--paper); }
   .cta-band .btn-primary::before{ background: var(--ink); }
   .cta-band .btn-primary:hover{ color: var(--paper); }
-  .cta-band .btn-outline{
-    color: var(--paper);
-    border-color: #4a4a4a;
-  }
+  .cta-band .btn-outline{ color: var(--paper); border-color: #4a4a4a; }
   .cta-band .btn-outline::before{ background: var(--paper); }
   .cta-band .btn-outline:hover{ color: var(--ink); }
 
-  /* ---------- footer ---------- */
-  footer{
-    border-top: 1px solid var(--hairline);
-    padding-block: 2.4rem;
-  }
-  .foot-wrap{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .foot-links{
-    display: flex;
-    gap: 1.8rem;
-    font-size: 0.76rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
+  footer{ border-top: 1px solid var(--hairline); padding-block: 2.3rem; }
+  .foot-wrap{ display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+  .foot-links{ display: flex; gap: 1.7rem; font-size: .74rem; text-transform: uppercase; letter-spacing: .12em; }
   .foot-links a{ text-decoration: none; color: var(--ink); position: relative; padding-bottom: 3px; }
   .foot-links a::after{
-    content: "";
-    position: absolute;
-    left: 0; right: 100%; bottom: 0;
-    height: 1px; background: var(--ink);
-    transition: right 0.3s var(--ease);
+    content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px; background: var(--ink);
+    transition: right .3s var(--ease);
   }
   .foot-links a:hover::after{ right: 0; }
-  .foot-note{
-    font-size: 0.76rem;
-    color: var(--graphite);
-    margin-top: 1.3rem;
+  .foot-note{ font-size: .74rem; color: var(--graphite); margin-top: 1.2rem; }
+
+  .back-top{
+    position: fixed; right: 1rem; bottom: 1rem; width: 42px; height: 42px;
+    background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center;
+    border: none; cursor: pointer; box-shadow: 0 10px 24px -8px rgba(0,0,0,0.35);
+    opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 60;
+  }
+  .back-top.show{ opacity: 1; pointer-events: auto; }
+  .back-top:hover{ transform: translateY(-2px); }
+
+  /* ---------- cart ---------- */
+  .cart-fab{
+    position: fixed; right: 1rem; bottom: 4.4rem; z-index: 70;
+    display: flex; align-items: center; gap: .5rem;
+    padding: .8rem 1.1rem; border: none; cursor: pointer;
+    background: var(--ink); color: var(--paper);
+    box-shadow: 0 12px 28px -10px rgba(0,0,0,0.45);
+    transition: transform .2s ease;
+  }
+  .cart-fab:hover{ transform: translateY(-2px); }
+  .cart-fab svg{ width: 18px; height: 18px; }
+  .cart-fab .cart-count{
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 19px; height: 19px; padding: 0 .3rem; border-radius: 999px;
+    background: var(--paper); color: var(--ink); font-size: .68rem; font-weight: 700;
+  }
+
+  .cart-overlay{
+    position: fixed; inset: 0; background: rgba(13,13,13,0.5); z-index: 90;
+    opacity: 0; pointer-events: none; transition: opacity .3s ease;
+  }
+  .cart-overlay.open{ opacity: 1; pointer-events: auto; }
+
+  .cart-drawer{
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 100;
+    width: min(420px, 100vw);
+    background: var(--paper);
+    box-shadow: -20px 0 40px -20px rgba(0,0,0,0.4);
+    transform: translateX(100%);
+    transition: transform .35s var(--ease);
+    display: flex; flex-direction: column;
+  }
+  .cart-drawer.open{ transform: translateX(0); }
+  .cart-head{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 1.2rem; border-bottom: 1px solid var(--hairline); flex-shrink: 0;
+  }
+  .cart-head h2{ font-size: .95rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+  .cart-close{
+    width: 30px; height: 30px; border: 1px solid var(--hairline); background: var(--paper);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--ink);
+  }
+  .cart-close:hover{ border-color: var(--ink); }
+  .cart-body{ flex: 1; overflow-y: auto; padding: 1rem 1.2rem; }
+  .cart-foot{ padding: 1rem 1.2rem 1.3rem; border-top: 1px solid var(--hairline); flex-shrink: 0; }
+
+  .cart-empty{ text-align: center; padding: 3rem 1rem; color: var(--graphite); font-size: .88rem; }
+
+  .cart-item{ display: flex; gap: .7rem; padding-block: .8rem; border-bottom: 1px solid var(--hairline); }
+  .cart-item img{ width: 56px; height: 56px; object-fit: cover; background: var(--stone); flex-shrink: 0; }
+  .cart-item-info{ flex: 1; min-width: 0; }
+  .cart-item-name{ font-size: .8rem; line-height: 1.3; margin-bottom: .3rem; }
+  .cart-item-price{ font-size: .76rem; color: var(--graphite); }
+  .cart-item-controls{ display: flex; align-items: center; gap: .5rem; margin-top: .5rem; }
+  .qty-btn{
+    width: 24px; height: 24px; border: 1px solid var(--hairline); background: var(--paper); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--ink);
+  }
+  .qty-btn:hover{ border-color: var(--ink); }
+  .qty-val{ font-size: .82rem; min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+  .cart-item-remove{
+    margin-left: auto; background: none; border: none; color: var(--graphite); font-size: .72rem;
+    text-decoration: underline; cursor: pointer; text-underline-offset: 2px;
+  }
+  .cart-item-remove:hover{ color: var(--ink); }
+  .cart-item-linetotal{ font-size: .82rem; font-weight: 600; white-space: nowrap; }
+
+  .min-order-note{
+    display: flex; align-items: center; gap: .5rem;
+    background: var(--warn-bg); color: var(--warn); font-size: .78rem;
+    padding: .65rem .8rem; margin-bottom: 1rem;
+  }
+
+  .cart-total-row{ display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .9rem; }
+  .cart-total-row .label{ font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--graphite); }
+  .cart-total-row .value{ font-size: 1.15rem; font-weight: 600; }
+
+  .cart-btn-primary{
+    display: block; width: 100%; text-align: center; padding: .9rem 1rem;
+    background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+    font-family: var(--font); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+    cursor: pointer; transition: all .18s ease;
+  }
+  .cart-btn-primary:hover{ background: #2a2a2a; }
+  .cart-btn-primary:disabled{ opacity: .4; cursor: not-allowed; }
+  .cart-btn-ghost{
+    display: block; width: 100%; text-align: center; padding: .75rem 1rem; margin-top: .6rem;
+    background: transparent; color: var(--graphite); border: 1px solid var(--hairline);
+    font-family: var(--font); font-size: .76rem; text-transform: uppercase; letter-spacing: .06em;
+    cursor: pointer;
+  }
+  .cart-btn-ghost:hover{ border-color: var(--ink); color: var(--ink); }
+
+  .checkout-field{ margin-bottom: .9rem; }
+  .checkout-field label{
+    display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--graphite);
+    margin-bottom: .35rem;
+  }
+  .checkout-field input, .checkout-field textarea{
+    width: 100%; border: 1px solid var(--hairline); padding: .6rem .7rem; font-size: .86rem;
+    font-family: var(--font); background: var(--paper); color: var(--ink);
+  }
+  .checkout-field input:focus, .checkout-field textarea:focus{ outline: none; border-color: var(--ink); }
+  .checkout-row{ display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+
+  .payment-note{
+    display: flex; align-items: center; gap: .5rem; padding: .7rem .8rem;
+    border: 1px solid var(--hairline); background: var(--stone); font-size: .82rem; margin-bottom: 1rem;
+  }
+  .payment-note strong{ font-weight: 600; }
+
+  .order-summary{
+    border: 1px solid var(--hairline); padding: .8rem .9rem; margin-bottom: 1.1rem; font-size: .78rem; color: var(--graphite);
+  }
+  .order-summary .osum-title{ font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .5rem; color: var(--graphite); }
+  .order-summary .osum-line{ display: flex; justify-content: space-between; gap: .5rem; padding-block: .18rem; }
+  .order-summary .osum-total{ display: flex; justify-content: space-between; margin-top: .5rem; padding-top: .5rem; border-top: 1px solid var(--hairline); font-weight: 600; color: var(--ink); font-size: .86rem; }
+
+  @media (max-width: 680px){
+    .catalog-controls{ flex-direction: column; align-items: stretch; }
+    .stock-toggle{ align-self: flex-start; }
+    .grid{ grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
+
+    .filters{
+      display: grid;
+      grid-template-rows: repeat(3, auto);
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(31%, 1fr);
+      gap: .5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: .9rem;
+      margin-bottom: .3rem;
+      scrollbar-width: thin;
+    }
+    .filters::-webkit-scrollbar{ height: 4px; }
+    .filters::-webkit-scrollbar-thumb{ background: var(--hairline); }
+    .filter-chip{ padding: .45rem .55rem; }
+    .filter-chip svg{ width: 17px; height: 17px; }
+    .filter-chip span{ font-size: .66rem; white-space: normal; line-height: 1.15; }
+    .filter-chip em{ display: none; }
   }
 </style>
 
@@ -528,37 +520,36 @@
 
   <div class="progress" id="progress"></div>
 
-  <header>
-    <div class="wrap nav">
-      <a class="mark" href="#topo">
-        <span class="dot"></span>
-        Brand Collection <span class="sub">Atacado</span>
-      </a>
-      <nav class="nav-links">
-        <a class="hide-mobile" href="#colecoes">Coleções</a>
-        <a class="hide-mobile" href="#porque">Por que nós</a>
-        <a class="hide-mobile" href="catalogo.html">Catálogo</a>
-        <a class="btn btn-primary" href="https://www.instagram.com/perfumesbrandcollectionbr" target="_blank" rel="noopener">
-          <span>Chamar no Instagram</span>
-        </a>
-      </nav>
+  <!-- MARQUEE (top bar) -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <div class="marquee-item"><span>15,2 mil seguidores</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Perfumes árabes originais</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Pedido mínimo de 10 unidades</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Envio para todo o Brasil</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Atendimento direto</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>15,2 mil seguidores</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Perfumes árabes originais</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Pedido mínimo de 10 unidades</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Envio para todo o Brasil</span><span class="sep">/</span></div>
+      <div class="marquee-item"><span>Atendimento direto</span><span class="sep">/</span></div>
     </div>
-  </header>
+  </div>
 
   <main id="topo">
 
     <!-- HERO -->
     <section class="hero">
-      <div class="wrap hero-inner">
-        <div class="reveal" style="--d:0ms">
-          <span class="eyebrow">Perfumaria árabe importada · atacado &amp; varejo</span>
-          <h1>Fragrâncias árabes com <em>alma</em>,<br>direto pra sua casa.</h1>
+      <div class="wrap">
+        <div class="reveal hero-copy" style="--d:0ms">
+          <span class="eyebrow">Perfumaria árabe importada · pedido mínimo de 10 unidades</span>
+          <h1>As melhores fragrâncias <em>você só encontra aqui</em></h1>
           <p class="lead">A linha completa Brand Collection, body sprays árabes, mini perfumes e óleos de cabelo — com o preço e o atendimento que só quem compra todo dia com a gente conhece.</p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="https://www.instagram.com/perfumesbrandcollectionbr" target="_blank" rel="noopener">
-              <span>Chamar no Instagram</span>
+            <a class="btn btn-primary" href="https://wa.me/5511964051453" target="_blank" rel="noopener">
+              <span>Chamar no WhatsApp</span>
             </a>
-            <a class="btn btn-outline" href="catalogo.html">
+            <a class="btn btn-outline" href="#catalogo">
               <span>Ver catálogo completo</span><span class="arrow">→</span>
             </a>
           </div>
@@ -567,125 +558,88 @@
             <span>+15,2 mil seguidores confiam na Brand Collection Atacado</span>
           </div>
         </div>
-
-        <div class="hero-figure parallax reveal" id="hero-figure" style="--d:150ms">
-          <svg viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <ellipse cx="110" cy="300" rx="70" ry="10" fill="#0d0d0d" opacity="0.06"/>
-            <path d="M92 40 H128 V70 H92 Z" stroke="#0d0d0d" stroke-width="1.4"/>
-            <path d="M100 10 H120 V40 H100 Z" fill="#0d0d0d" opacity="0.9"/>
-            <rect x="98" y="0" width="24" height="10" rx="2" fill="#0d0d0d"/>
-            <path d="M60 70 Q60 60 76 60 H144 Q160 60 160 70 V260 Q160 280 140 280 H80 Q60 280 60 260 Z" stroke="#0d0d0d" stroke-width="1.6" fill="#ffffff"/>
-            <path d="M60 130 H160" stroke="#0d0d0d" stroke-width="0.6" opacity="0.4"/>
-            <path d="M76 150 Q110 140 144 150 Q110 175 76 150 Z" stroke="#0d0d0d" stroke-width="1.2" fill="none" opacity="0.55"/>
-            <circle cx="110" cy="150" r="3" fill="#0d0d0d"/>
-            <path d="M76 200 H144 M76 214 H144 M76 228 H130" stroke="#0d0d0d" stroke-width="0.6" opacity="0.35"/>
-          </svg>
-        </div>
       </div>
     </section>
 
-    <!-- MARQUEE -->
-    <div class="marquee">
-      <div class="marquee-track">
-        <div class="marquee-item"><span>15,2 mil seguidores</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Perfumes árabes originais</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Atacado &amp; varejo</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Envio para todo o Brasil</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Atendimento direto</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>15,2 mil seguidores</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Perfumes árabes originais</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Atacado &amp; varejo</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Envio para todo o Brasil</span><span class="sep">/</span></div>
-        <div class="marquee-item"><span>Atendimento direto</span><span class="sep">/</span></div>
-      </div>
-    </div>
-
-    <!-- CATEGORIES -->
-    <section id="colecoes" class="wrap">
+    <!-- CATALOG -->
+    <section id="catalogo" class="wrap-wide">
       <div class="section-head reveal">
         <span class="idx">01</span>
         <div>
-          <span class="eyebrow">O que você encontra</span>
-          <h2>Coleções</h2>
-          <p class="section-sub">Cada linha foi escolhida pelo giro e pela fixação — pensada pra quem revende e pra quem só quer usar todo dia.</p>
+          <span class="eyebrow">Catálogo completo · pedido mínimo de 10 unidades</span>
+          <h2>Encontre seu perfume</h2>
         </div>
       </div>
 
-      <div class="cat-grid">
-        <article class="cat-card reveal" style="--d:0ms">
-          <span class="cat-num">01</span>
-          <svg class="cat-icon" viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg>
-          <h3>Perfumes Brand Collection</h3>
-          <p>A linha completa inspirada nos grandes clássicos árabes, com fixação longa e notas amadeiradas.</p>
-          <span class="cat-tag">Mais vendido</span>
-        </article>
-
-        <article class="cat-card reveal" style="--d:80ms">
-          <span class="cat-num">02</span>
-          <svg class="cat-icon" viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg>
-          <h3>Body Árabe</h3>
-          <p>Body splash concentrado para hidratar e perfumar a pele com o mesmo DNA olfativo dos perfumes.</p>
-          <span class="cat-tag">Fixação longa</span>
-        </article>
-
-        <article class="cat-card reveal" style="--d:160ms">
-          <span class="cat-num">03</span>
-          <svg class="cat-icon" viewBox="0 0 60 60" fill="none"><rect x="24" y="22" width="12" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M27 22v-5h6v5" stroke="currentColor" stroke-width="1.4"/></svg>
-          <h3>Mini Árabes</h3>
-          <p>Miniaturas perfeitas para testar antes de comprar o tamanho grande, ou para presentear.</p>
-          <span class="cat-tag">Ideal p/ revenda</span>
-        </article>
-
-        <article class="cat-card reveal" style="--d:240ms">
-          <span class="cat-num">04</span>
-          <svg class="cat-icon" viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg>
-          <h3>Óleos de Cabelo</h3>
-          <p>Tratamento e perfume em um só produto — brilho, maciez e fragrância árabe do café até a noite.</p>
-          <span class="cat-tag">Cuidado diário</span>
-        </article>
+      <div class="catalog-controls">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="search" type="text" placeholder="Buscar por nome do perfume ou produto...">
+        </div>
+        <label class="stock-toggle">
+          <input type="checkbox" id="hide-out"> Ocultar esgotados
+        </label>
       </div>
-    </section>
 
-    <!-- WHY US -->
-    <section id="porque" class="why">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="idx">02</span>
-          <div>
-            <span class="eyebrow">Compre com quem entende</span>
-            <h2>Por que a Brand Collection Atacado</h2>
-          </div>
-        </div>
-        <div class="why-grid">
-          <div class="why-item reveal" style="--d:0ms">
-            <span class="why-num">01</span>
-            <h3>Melhor preço garantido</h3>
-            <p>Compra direto do fornecedor e repassa a economia — sem intermediário encarecendo o produto.</p>
-          </div>
-          <div class="why-item reveal" style="--d:100ms">
-            <span class="why-num">02</span>
-            <h3>Atendimento direto</h3>
-            <p>Fala com gente de verdade pelo Instagram, sem robô e sem enrolação, do pedido à entrega.</p>
-          </div>
-          <div class="why-item reveal" style="--d:200ms">
-            <span class="why-num">03</span>
-            <h3>Atacado ou varejo</h3>
-            <p>Quer revender? Monta seu kit. Quer só o seu perfume? Compra a unidade. Do seu jeito.</p>
-          </div>
-        </div>
+      <div class="filters" id="filters">
+        <button class="filter-chip active" data-cat="Todos">
+          <svg viewBox="0 0 60 60" fill="none"><circle cx="18" cy="30" r="3" fill="currentColor"/><circle cx="30" cy="30" r="3" fill="currentColor"/><circle cx="42" cy="30" r="3" fill="currentColor"/><circle cx="30" cy="18" r="3" fill="currentColor"/><circle cx="30" cy="42" r="3" fill="currentColor"/></svg>
+          <span>Todos</span>
+          <em>1579</em>
+        </button>
+        <button class="filter-chip" data-cat="PERFUME ÁRABE ORIGINAL"><svg viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg><span>PERFUME ÁRABE ORIGINAL</span><em>453</em></button>
+        <button class="filter-chip" data-cat="BRANDCOLLECTION 25 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>BRANDCOLLECTION 25 ml</span><em>226</em></button>
+        <button class="filter-chip" data-cat="ISABELLE"><svg viewBox="0 0 60 60" fill="none"><rect x="22" y="24" width="16" height="28" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M28 24v-8h6" stroke="currentColor" stroke-width="1.4"/><path d="M34 12l6-4M36 16l7-1M35 20l6 3" stroke="currentColor" stroke-width="1.2"/></svg><span>ISABELLE</span><em>140</em></button>
+        <button class="filter-chip" data-cat="PERFUME ORIGINAL 100%"><svg viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg><span>PERFUME ORIGINAL 100%</span><em>109</em></button>
+        <button class="filter-chip" data-cat="TESTER ORIGINAL PERFUME"><svg viewBox="0 0 60 60" fill="none"><path d="M26 10h8v12l10 22c1.5 3-1 6-4 6H20c-3 0-5.5-3-4-6l10-22z" stroke="currentColor" stroke-width="1.4"/><path d="M24 10h12" stroke="currentColor" stroke-width="1.4"/><path d="M23 34h14" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>TESTER ORIGINAL PERFUME</span><em>51</em></button>
+        <button class="filter-chip" data-cat="Decante de 15ml"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="22" width="12" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M27 22v-5h6v5" stroke="currentColor" stroke-width="1.4"/></svg><span>Decante de 15ml</span><em>47</em></button>
+        <button class="filter-chip" data-cat="BEST BRANDCOLLECTION 25 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>BEST BRANDCOLLECTION 25 ml</span><em>46</em></button>
+        <button class="filter-chip" data-cat="Tubete 30 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="22" width="12" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M27 22v-5h6v5" stroke="currentColor" stroke-width="1.4"/></svg><span>Tubete 30 ml</span><em>45</em></button>
+        <button class="filter-chip" data-cat="Pelúcias Loy"><svg viewBox="0 0 60 60" fill="none"><path d="M30 46S12 34 12 22a9 9 0 0 1 18-1 9 9 0 0 1 18 1c0 12-18 24-18 24z" stroke="currentColor" stroke-width="1.4"/></svg><span>Pelúcias Loy</span><em>43</em></button>
+        <button class="filter-chip" data-cat="Miniatura Onlyou NYC"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="22" width="12" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M27 22v-5h6v5" stroke="currentColor" stroke-width="1.4"/></svg><span>Miniatura Onlyou NYC</span><em>40</em></button>
+        <button class="filter-chip" data-cat="Victoria’s Secret 100% original"><svg viewBox="0 0 60 60" fill="none"><path d="M30 30c-6-10-18-10-18 0 0 6 10 4 18 0zM30 30c6-10 18-10 18 0 0 6-10 4-18 0z" stroke="currentColor" stroke-width="1.4"/><circle cx="30" cy="30" r="3" fill="currentColor"/></svg><span>Victoria’s Secret 100% original</span><em>40</em></button>
+        <button class="filter-chip" data-cat="Contratipo grande 80-100 ml"><svg viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg><span>Contratipo grande 80-100 ml</span><em>35</em></button>
+        <button class="filter-chip" data-cat="Arabic de 25ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>Arabic de 25ml</span><em>34</em></button>
+        <button class="filter-chip" data-cat="BODY SPLASH BRANDCOLLECTION"><svg viewBox="0 0 60 60" fill="none"><rect x="22" y="24" width="16" height="28" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M28 24v-8h6" stroke="currentColor" stroke-width="1.4"/><path d="M34 12l6-4M36 16l7-1M35 20l6 3" stroke="currentColor" stroke-width="1.2"/></svg><span>BODY SPLASH BRANDCOLLECTION</span><em>27</em></button>
+        <button class="filter-chip" data-cat="PERFUME CAPILARES"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>PERFUME CAPILARES</span><em>26</em></button>
+        <button class="filter-chip" data-cat="TREE  HUT ESFOLIANTE CORPORAL"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>TREE  HUT ESFOLIANTE CORPORAL</span><em>24</em></button>
+        <button class="filter-chip" data-cat="Ciclo mini infantil 100 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="22" width="12" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M27 22v-5h6v5" stroke="currentColor" stroke-width="1.4"/></svg><span>Ciclo mini infantil 100 ml</span><em>22</em></button>
+        <button class="filter-chip" data-cat="Afeer"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>Afeer</span><em>21</em></button>
+        <button class="filter-chip" data-cat="Dream brand 80-100 ml"><svg viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg><span>Dream brand 80-100 ml</span><em>21</em></button>
+        <button class="filter-chip" data-cat="KIKO GLOSS ORIGINAL"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="10" width="12" height="26" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M30 36v10" stroke="currentColor" stroke-width="1.4"/><ellipse cx="30" cy="49" rx="5" ry="3" stroke="currentColor" stroke-width="1.4"/></svg><span>KIKO GLOSS ORIGINAL</span><em>19</em></button>
+        <button class="filter-chip" data-cat="JMY BODY SPLASH 100 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="22" y="24" width="16" height="28" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M28 24v-8h6" stroke="currentColor" stroke-width="1.4"/><path d="M34 12l6-4M36 16l7-1M35 20l6 3" stroke="currentColor" stroke-width="1.2"/></svg><span>JMY BODY SPLASH 100 ml</span><em>16</em></button>
+        <button class="filter-chip" data-cat="Imitação ÁRABE  de 30ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>Imitação ÁRABE  de 30ml</span><em>16</em></button>
+        <button class="filter-chip" data-cat="MAQUIAGEM Cx fechado"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="10" width="12" height="26" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M30 36v10" stroke="currentColor" stroke-width="1.4"/><ellipse cx="30" cy="49" rx="5" ry="3" stroke="currentColor" stroke-width="1.4"/></svg><span>MAQUIAGEM Cx fechado</span><em>16</em></button>
+        <button class="filter-chip" data-cat="Hidratante dreambrandcollection"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>Hidratante dreambrandcollection</span><em>11</em></button>
+        <button class="filter-chip" data-cat="Outros"><svg viewBox="0 0 60 60" fill="none"><path d="M22 12h16v10H22z" stroke="currentColor" stroke-width="1.4"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z" stroke="currentColor" stroke-width="1.4"/><path d="M24 6h12v6H24z" fill="currentColor" opacity="0.85"/></svg><span>Outros</span><em>10</em></button>
+        <button class="filter-chip" data-cat="Smart collection 25 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>Smart collection 25 ml</span><em>8</em></button>
+        <button class="filter-chip" data-cat="BICICLETA PERFUME 100 ml"><svg viewBox="0 0 60 60" fill="none"><rect x="20" y="18" width="20" height="34" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M26 18v-6h8v6" stroke="currentColor" stroke-width="1.4"/><path d="M22 30h16" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg><span>BICICLETA PERFUME 100 ml</span><em>8</em></button>
+        <button class="filter-chip" data-cat="SPRAY ÁRABE"><svg viewBox="0 0 60 60" fill="none"><rect x="22" y="24" width="16" height="28" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M28 24v-8h6" stroke="currentColor" stroke-width="1.4"/><path d="M34 12l6-4M36 16l7-1M35 20l6 3" stroke="currentColor" stroke-width="1.2"/></svg><span>SPRAY ÁRABE</span><em>7</em></button>
+        <button class="filter-chip" data-cat="COSMÉTICO PARA CABELO"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>COSMÉTICO PARA CABELO</span><em>7</em></button>
+        <button class="filter-chip" data-cat="Bath &body works"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>Bath &body works</span><em>7</em></button>
+        <button class="filter-chip" data-cat="BLOW GIRL GEL"><svg viewBox="0 0 60 60" fill="none"><rect x="24" y="10" width="12" height="26" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M30 36v10" stroke="currentColor" stroke-width="1.4"/><ellipse cx="30" cy="49" rx="5" ry="3" stroke="currentColor" stroke-width="1.4"/></svg><span>BLOW GIRL GEL</span><em>3</em></button>
+        <button class="filter-chip" data-cat="Fixodent Original"><svg viewBox="0 0 60 60" fill="none"><path d="M30 10c8 8 12 16 12 24a12 12 0 1 1-24 0c0-8 4-16 12-24z" stroke="currentColor" stroke-width="1.4"/></svg><span>Fixodent Original</span><em>1</em></button>
+      </div>
+
+      <p class="count-line"><span id="result-count">1579</span> produtos encontrados</p>
+
+      <div class="grid" id="grid"></div>
+      <div class="empty-state" id="empty" style="display:none">
+        <h3>Nenhum produto encontrado</h3>
+        <p>Tenta buscar por outro nome ou muda o filtro de categoria.</p>
       </div>
     </section>
 
     <!-- SOCIAL PROOF -->
     <section id="instagram" class="wrap">
       <div class="social">
-        <div class="ig-grid reveal" aria-hidden="true">
-          <div class="ig-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></div>
-          <div class="ig-cell"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 12h16v10H22z"/><path d="M14 22c0-4 3-6 8-6h16c5 0 8 2 8 6v26c0 5-4 8-9 8H23c-5 0-9-3-9-8z"/></svg></div>
-          <div class="ig-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 21c0-4-3.5-6-8-6s-8 2-8 6"/><circle cx="12" cy="8" r="4"/></svg></div>
-          <div class="ig-cell"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="20" y="18" width="20" height="34" rx="4"/></svg></div>
-          <div class="ig-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4z"/></svg></div>
-          <div class="ig-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 5h18M3 12h18M3 19h18"/></svg></div>
+        <div class="phone-stage reveal" aria-hidden="true">
+          <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <video class="phone-video" autoplay muted loop playsinline preload="metadata">
+              <source src="assets/instagram-video.mp4" type="video/mp4">
+            </video>
+          </div>
         </div>
         <div class="reveal" style="--d:120ms">
           <span class="eyebrow">@perfumesbrandcollectionbr</span>
@@ -703,12 +657,12 @@
       <div class="wrap reveal">
         <span class="eyebrow">Fale com a gente</span>
         <h2>Pronta pra sentir o seu próximo perfume?</h2>
-        <p>Manda uma mensagem no Instagram e a gente te ajuda a escolher a fragrância certa — pra usar ou pra revender.</p>
+        <p>Manda uma mensagem no WhatsApp e a gente te ajuda a escolher a fragrância certa — pra usar ou pra revender.</p>
         <div class="cta-actions">
-          <a class="btn btn-primary" href="https://www.instagram.com/perfumesbrandcollectionbr" target="_blank" rel="noopener">
-            <span>Chamar no Instagram</span>
+          <a class="btn btn-primary" href="https://wa.me/5511964051453" target="_blank" rel="noopener">
+            <span>Chamar no WhatsApp</span>
           </a>
-          <a class="btn btn-outline" href="catalogo.html">
+          <a class="btn btn-outline" href="#catalogo">
             <span>Ver catálogo completo</span><span class="arrow">→</span>
           </a>
         </div>
@@ -725,7 +679,7 @@
       </a>
       <div class="foot-links">
         <a href="https://www.instagram.com/perfumesbrandcollectionbr" target="_blank" rel="noopener">Instagram</a>
-        <a href="catalogo.html">Catálogo</a>
+        <a href="#catalogo">Catálogo</a>
         <a href="https://linktr.ee/perfumesbrandcollectionbra" target="_blank" rel="noopener">Linktree</a>
       </div>
     </div>
@@ -734,8 +688,35 @@
     </div>
   </footer>
 
+  <button class="back-top" id="back-top" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <button class="cart-fab" id="cart-fab" aria-label="Abrir carrinho">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Carrinho de compras">
+    <div class="cart-head">
+      <h2 id="cart-title">Seu carrinho</h2>
+      <button class="cart-close" id="cart-close" aria-label="Fechar carrinho">&times;</button>
+    </div>
+    <div class="cart-body" id="cart-body"></div>
+    <div class="cart-foot" id="cart-foot"></div>
+  </aside>
+
   <script>
-    // scroll progress bar
+    const PRODUCTS = (window.CATALOG_DATA && window.CATALOG_DATA.products) || [];
+    const CATEGORIES = ["PERFUME ÁRABE ORIGINAL", "BRANDCOLLECTION 25 ml", "ISABELLE", "PERFUME ORIGINAL 100%", "TESTER ORIGINAL PERFUME", "Decante de 15ml", "BEST BRANDCOLLECTION 25 ml", "Tubete 30 ml", "Pelúcias Loy", "Miniatura Onlyou NYC", "Victoria’s Secret 100% original", "Contratipo grande 80-100 ml", "Arabic de 25ml", "BODY SPLASH BRANDCOLLECTION", "PERFUME CAPILARES", "TREE  HUT ESFOLIANTE CORPORAL", "Ciclo mini infantil 100 ml", "Afeer", "Dream brand 80-100 ml", "KIKO GLOSS ORIGINAL", "JMY BODY SPLASH 100 ml", "Imitação ÁRABE  de 30ml", "MAQUIAGEM Cx fechado", "Hidratante dreambrandcollection", "Outros", "Smart collection 25 ml", "BICICLETA PERFUME 100 ml", "SPRAY ÁRABE", "COSMÉTICO PARA CABELO", "Bath &body works", "BLOW GIRL GEL", "Fixodent Original"];
+
+    function fmtBRL(v){
+      if (v === null || v === undefined) return '';
+      return 'R$' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?=,))/g, '.');
+    }
+
+    // scroll progress
     const progress = document.getElementById('progress');
     function onScroll(){
       const h = document.documentElement;
@@ -753,33 +734,311 @@
     } else {
       const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
+          if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
         });
       }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
       revealEls.forEach(el => io.observe(el));
-      // reveal anything already in the initial viewport right away
       revealEls.forEach(el => {
         const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) {
-          el.classList.add('is-visible');
-          io.unobserve(el);
-        }
+        if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('is-visible'); io.unobserve(el); }
       });
     }
 
-    // hero parallax
-    const heroFigure = document.getElementById('hero-figure');
-    if (!prefersReduced && heroFigure) {
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        if (y < 900) {
-          heroFigure.style.transform = `translateY(${y * 0.08}px)`;
-        }
-      }, { passive: true });
+    // catalog
+    const grid = document.getElementById('grid');
+    const filtersEl = document.getElementById('filters');
+    const searchEl = document.getElementById('search');
+    const hideOutEl = document.getElementById('hide-out');
+    const emptyEl = document.getElementById('empty');
+    const countEl = document.getElementById('result-count');
+    let activeCat = 'Todos';
+
+    function fmtOld(o){ return o ? `<span class="card-old-price">${fmtBRL(o)}</span>` : ''; }
+
+    function cardHtml(p){
+      const off = p.oldPrice ? '<span class="badge off">Oferta</span>' : '';
+      const esg = p.esgotado ? '<span class="badge esgotado">Esgotado</span>' : '';
+      const cls = p.esgotado ? 'card is-esgotado' : 'card';
+      const btn = p.esgotado
+        ? `<button class="add-to-cart" disabled>Esgotado</button>`
+        : `<button class="add-to-cart" data-id="${p.id}">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+             <span>Comprar</span>
+           </button>`;
+      return `<div class="${cls}">
+        <div class="thumb-wrap">
+          <img src="${p.thumb}" alt="${p.name.replace(/"/g,'&quot;')}" loading="lazy" decoding="async">
+          ${off}${esg}
+        </div>
+        <div class="card-body">
+          <div class="card-name">${p.name}</div>
+          <div class="card-price-row">
+            <span class="card-price">${fmtBRL(p.price)}</span>
+            ${fmtOld(p.oldPrice)}
+          </div>
+          ${btn}
+        </div>
+      </div>`;
     }
+
+    function renderCatalog(){
+      const q = searchEl.value.trim().toLowerCase();
+      const hideOut = hideOutEl.checked;
+      const filtered = PRODUCTS.filter(p => {
+        if (activeCat !== 'Todos' && p.category !== activeCat) return false;
+        if (hideOut && p.esgotado) return false;
+        if (q && !p.name.toLowerCase().includes(q)) return false;
+        return true;
+      });
+      countEl.textContent = filtered.length;
+      if (filtered.length === 0){
+        grid.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+      grid.style.display = 'grid';
+      emptyEl.style.display = 'none';
+      grid.innerHTML = filtered.map(cardHtml).join('');
+    }
+
+    filtersEl.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCat = btn.dataset.cat;
+        filtersEl.querySelectorAll('.filter-chip').forEach(b => b.classList.toggle('active', b === btn));
+        renderCatalog();
+      });
+    });
+
+    let debounceTimer;
+    searchEl.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(renderCatalog, 120);
+    });
+    hideOutEl.addEventListener('change', renderCatalog);
+
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 900));
+    backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+    // ---------------- cart ----------------
+    const WHATSAPP_NUMBER = '5511964051453';
+    const MIN_ORDER_QTY = 10;
+
+    const PRODUCTS_BY_ID = {};
+    PRODUCTS.forEach(p => { PRODUCTS_BY_ID[p.id] = p; });
+
+    function loadCart(){
+      try { return JSON.parse(localStorage.getItem('bc_cart')) || {}; }
+      catch(e){ return {}; }
+    }
+    function saveCart(){ localStorage.setItem('bc_cart', JSON.stringify(cart)); }
+
+    let cart = loadCart();
+    let cartView = 'items';
+
+    function cartEntries(){
+      return Object.entries(cart)
+        .map(([id, qty]) => ({ id, qty, product: PRODUCTS_BY_ID[id] }))
+        .filter(e => e.product);
+    }
+    function cartTotalQty(){ return cartEntries().reduce((s, e) => s + e.qty, 0); }
+    function cartTotalPrice(){ return cartEntries().reduce((s, e) => s + e.qty * (e.product.price || 0), 0); }
+
+    const cartFab = document.getElementById('cart-fab');
+    const cartCountEl = document.getElementById('cart-count');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartBody = document.getElementById('cart-body');
+    const cartFoot = document.getElementById('cart-foot');
+    const cartTitle = document.getElementById('cart-title');
+
+    function updateCartBadge(){ cartCountEl.textContent = cartTotalQty(); }
+
+    function openCart(){
+      cartView = 'items';
+      renderCartDrawer();
+      cartOverlay.classList.add('open');
+      cartDrawer.classList.add('open');
+    }
+    function closeCart(){
+      cartOverlay.classList.remove('open');
+      cartDrawer.classList.remove('open');
+    }
+
+    function addToCart(id){
+      cart[id] = (cart[id] || 0) + 1;
+      saveCart();
+      updateCartBadge();
+      if (cartDrawer.classList.contains('open') && cartView === 'items') renderCartDrawer();
+    }
+    function setQty(id, qty){
+      if (qty <= 0) delete cart[id]; else cart[id] = qty;
+      saveCart();
+      updateCartBadge();
+      renderCartDrawer();
+    }
+    function removeFromCart(id){ setQty(id, 0); }
+
+    function renderCartDrawer(){
+      if (cartView === 'checkout') renderCheckoutView(); else renderItemsView();
+    }
+
+    function renderItemsView(){
+      cartTitle.textContent = 'Seu carrinho';
+      const entries = cartEntries();
+      if (entries.length === 0){
+        cartBody.innerHTML = `<div class="cart-empty">Seu carrinho está vazio.<br>Adicione produtos pra montar seu pedido.</div>`;
+        cartFoot.innerHTML = '';
+        return;
+      }
+      cartBody.innerHTML = entries.map(e => `
+        <div class="cart-item" data-id="${e.id}">
+          <img src="${e.product.thumb}" alt="">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${e.product.name}</div>
+            <div class="cart-item-price">${fmtBRL(e.product.price)} / un</div>
+            <div class="cart-item-controls">
+              <button class="qty-btn" data-action="dec">−</button>
+              <span class="qty-val">${e.qty}</span>
+              <button class="qty-btn" data-action="inc">+</button>
+              <button class="cart-item-remove" data-action="remove">remover</button>
+            </div>
+          </div>
+          <div class="cart-item-linetotal">${fmtBRL(e.product.price * e.qty)}</div>
+        </div>
+      `).join('');
+
+      const totalQty = cartTotalQty();
+      const totalPrice = cartTotalPrice();
+      const missing = MIN_ORDER_QTY - totalQty;
+      const minNote = missing > 0
+        ? `<div class="min-order-note">Faltam ${missing} unidade${missing > 1 ? 's' : ''} pra atingir o pedido mínimo de ${MIN_ORDER_QTY}.</div>`
+        : '';
+
+      cartFoot.innerHTML = `
+        ${minNote}
+        <div class="cart-total-row">
+          <span class="label">Total (${totalQty} un.)</span>
+          <span class="value">${fmtBRL(totalPrice)}</span>
+        </div>
+        <button class="cart-btn-primary" id="cart-go-checkout" ${missing > 0 ? 'disabled' : ''}>Continuar para entrega</button>
+      `;
+
+      cartBody.querySelectorAll('.cart-item').forEach(row => {
+        const id = row.dataset.id;
+        row.querySelector('[data-action="inc"]').addEventListener('click', () => setQty(id, (cart[id] || 0) + 1));
+        row.querySelector('[data-action="dec"]').addEventListener('click', () => setQty(id, (cart[id] || 0) - 1));
+        row.querySelector('[data-action="remove"]').addEventListener('click', () => removeFromCart(id));
+      });
+      const goBtn = document.getElementById('cart-go-checkout');
+      if (goBtn) goBtn.addEventListener('click', () => { cartView = 'checkout'; renderCartDrawer(); });
+    }
+
+    function renderCheckoutView(){
+      cartTitle.textContent = 'Dados de entrega';
+      const totalQty = cartTotalQty();
+      const totalPrice = cartTotalPrice();
+      const entries = cartEntries();
+
+      cartBody.innerHTML = `
+        <div class="checkout-field">
+          <label for="ck-nome">Nome</label>
+          <input type="text" id="ck-nome" placeholder="Seu nome completo">
+        </div>
+        <div class="checkout-field">
+          <label for="ck-telefone">Telefone para contato</label>
+          <input type="tel" id="ck-telefone" placeholder="(11) 90000-0000">
+        </div>
+        <div class="checkout-field">
+          <label for="ck-endereco">Endereço de entrega</label>
+          <input type="text" id="ck-endereco" placeholder="Rua, número, bairro, cidade">
+        </div>
+        <div class="checkout-field">
+          <label for="ck-complemento">Complemento (opcional)</label>
+          <input type="text" id="ck-complemento" placeholder="Apto, bloco, ponto de referência...">
+        </div>
+        <div class="payment-note">
+          <span>Pagamento: <strong>Pix</strong></span>
+        </div>
+        <div class="order-summary">
+          <div class="osum-title">Resumo do pedido</div>
+          ${entries.map(e => `<div class="osum-line"><span>${e.qty}x ${e.product.name}</span><span>${fmtBRL(e.product.price * e.qty)}</span></div>`).join('')}
+          <div class="osum-total"><span>Total (${totalQty} un.)</span><span>${fmtBRL(totalPrice)}</span></div>
+        </div>
+      `;
+
+      cartFoot.innerHTML = `
+        <button class="cart-btn-primary" id="cart-finish">Finalizar compra no WhatsApp</button>
+        <button class="cart-btn-ghost" id="cart-back">Voltar ao carrinho</button>
+      `;
+
+      document.getElementById('cart-back').addEventListener('click', () => { cartView = 'items'; renderCartDrawer(); });
+      document.getElementById('cart-finish').addEventListener('click', submitCheckout);
+    }
+
+    function submitCheckout(){
+      const nome = document.getElementById('ck-nome').value.trim();
+      const telefone = document.getElementById('ck-telefone').value.trim();
+      const endereco = document.getElementById('ck-endereco').value.trim();
+      const complemento = document.getElementById('ck-complemento').value.trim();
+
+      if (!nome || !telefone || !endereco){
+        alert('Preenche nome, telefone e endereço pra continuar.');
+        return;
+      }
+
+      const entries = cartEntries();
+      const totalQty = cartTotalQty();
+      const totalPrice = cartTotalPrice();
+
+      const lines = [];
+      lines.push('Olá! Quero fazer o seguinte pedido:');
+      lines.push('');
+      entries.forEach(e => {
+        lines.push(`${e.qty}x ${e.product.name} — ${fmtBRL(e.product.price)} cada`);
+      });
+      lines.push('');
+      lines.push(`Total: ${fmtBRL(totalPrice)} (${totalQty} unidades)`);
+      lines.push('');
+      lines.push('Dados para entrega:');
+      lines.push(`Nome: ${nome}`);
+      lines.push(`Telefone: ${telefone}`);
+      lines.push(`Endereço: ${endereco}${complemento ? ' - ' + complemento : ''}`);
+      lines.push('');
+      lines.push('Forma de pagamento: Pix');
+
+      const message = lines.join('\n');
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank', 'noopener');
+
+      cart = {};
+      saveCart();
+      updateCartBadge();
+      cartView = 'items';
+      closeCart();
+    }
+
+    // add-to-cart delegation (grid re-renders often, so listen on the container)
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.add-to-cart[data-id]');
+      if (!btn) return;
+      addToCart(btn.dataset.id);
+      btn.classList.add('added');
+      const label = btn.querySelector('span');
+      const prevText = label ? label.textContent : null;
+      if (label) label.textContent = 'Adicionado ✓';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        if (label && prevText) label.textContent = prevText;
+      }, 900);
+    });
+
+    cartFab.addEventListener('click', openCart);
+    document.getElementById('cart-close').addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    updateCartBadge();
+    renderCatalog();
   </script>
 
 </body>
