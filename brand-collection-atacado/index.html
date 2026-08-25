@@ -472,6 +472,8 @@
   }
   .checkout-field input:focus, .checkout-field textarea:focus{ outline: none; border-color: var(--ink); }
   .checkout-row{ display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .checkout-row .checkout-field{ margin-bottom: 0; }
+  .field-error{ min-height: 1.1em; font-size: .74rem; color: var(--danger, #b3261e); margin-top: .3rem; }
 
   .payment-note{
     display: flex; align-items: center; gap: .5rem; padding: .7rem .8rem;
@@ -981,20 +983,44 @@
 
       cartBody.innerHTML = `
         <div class="checkout-field">
-          <label for="ck-nome">Nome</label>
-          <input type="text" id="ck-nome" placeholder="Seu nome completo">
+          <label for="ck-nome">Nome completo</label>
+          <input type="text" id="ck-nome" placeholder="Seu nome completo" required>
+        </div>
+        <div class="checkout-field">
+          <label for="ck-cpf">CPF</label>
+          <input type="text" id="ck-cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required>
+          <div class="field-error" id="err-cpf"></div>
         </div>
         <div class="checkout-field">
           <label for="ck-telefone">Telefone para contato</label>
-          <input type="tel" id="ck-telefone" placeholder="(11) 90000-0000">
+          <input type="tel" id="ck-telefone" placeholder="(11) 90000-0000" required>
         </div>
         <div class="checkout-field">
-          <label for="ck-endereco">Endereço de entrega</label>
-          <input type="text" id="ck-endereco" placeholder="Rua, número, bairro, cidade">
+          <label for="ck-cep">CEP</label>
+          <input type="text" id="ck-cep" inputmode="numeric" placeholder="00000-000" maxlength="9" required>
+          <div class="field-error" id="err-cep"></div>
         </div>
         <div class="checkout-field">
-          <label for="ck-complemento">Complemento (opcional)</label>
-          <input type="text" id="ck-complemento" placeholder="Apto, bloco, ponto de referência...">
+          <label for="ck-rua">Rua</label>
+          <input type="text" id="ck-rua" placeholder="Preenche sozinho a partir do CEP" required>
+        </div>
+        <div class="checkout-row">
+          <div class="checkout-field">
+            <label for="ck-numero">Número</label>
+            <input type="text" id="ck-numero" inputmode="numeric" placeholder="123" required>
+          </div>
+          <div class="checkout-field">
+            <label for="ck-complemento">Complemento (opcional)</label>
+            <input type="text" id="ck-complemento" placeholder="Apto, bloco...">
+          </div>
+        </div>
+        <div class="checkout-field">
+          <label for="ck-bairro">Bairro</label>
+          <input type="text" id="ck-bairro" placeholder="Preenche sozinho a partir do CEP" required>
+        </div>
+        <div class="checkout-field">
+          <label for="ck-cidade">Cidade / UF</label>
+          <input type="text" id="ck-cidade" placeholder="Preenche sozinho a partir do CEP" required>
         </div>
         <div class="payment-note">
           <span>Pagamento: <strong>Pix</strong></span>
@@ -1013,16 +1039,85 @@
 
       document.getElementById('cart-back').addEventListener('click', () => { cartView = 'items'; renderCartDrawer(); });
       document.getElementById('cart-finish').addEventListener('click', submitCheckout);
+
+      const cpfEl = document.getElementById('ck-cpf');
+      cpfEl.addEventListener('input', () => { cpfEl.value = maskCPF(cpfEl.value); });
+
+      const cepEl = document.getElementById('ck-cep');
+      cepEl.addEventListener('input', () => { cepEl.value = maskCEP(cepEl.value); });
+      cepEl.addEventListener('blur', () => lookupCep(cepEl.value));
+    }
+
+    function maskCPF(v){
+      v = v.replace(/\D/g,'').slice(0,11);
+      v = v.replace(/(\d{3})(\d)/, '$1.$2');
+      v = v.replace(/(\d{3})(\d)/, '$1.$2');
+      v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+      return v;
+    }
+
+    function isValidCPF(cpfRaw){
+      const cpf = cpfRaw.replace(/\D/g,'');
+      if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+      let sum = 0;
+      for (let i = 0; i < 9; i++) sum += parseInt(cpf[i],10) * (10 - i);
+      let rev = 11 - (sum % 11);
+      if (rev >= 10) rev = 0;
+      if (rev !== parseInt(cpf[9],10)) return false;
+      sum = 0;
+      for (let i = 0; i < 10; i++) sum += parseInt(cpf[i],10) * (11 - i);
+      rev = 11 - (sum % 11);
+      if (rev >= 10) rev = 0;
+      return rev === parseInt(cpf[10],10);
+    }
+
+    function maskCEP(v){
+      v = v.replace(/\D/g,'').slice(0,8);
+      v = v.replace(/(\d{5})(\d)/, '$1-$2');
+      return v;
+    }
+
+    async function lookupCep(cepRaw){
+      const cep = cepRaw.replace(/\D/g,'');
+      const errEl = document.getElementById('err-cep');
+      if (!errEl) return;
+      errEl.textContent = '';
+      if (cep.length !== 8) return;
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data.erro){ errEl.textContent = 'CEP não encontrado.'; return; }
+        const ruaEl = document.getElementById('ck-rua');
+        const bairroEl = document.getElementById('ck-bairro');
+        const cidadeEl = document.getElementById('ck-cidade');
+        if (ruaEl) ruaEl.value = data.logradouro || ruaEl.value;
+        if (bairroEl) bairroEl.value = data.bairro || bairroEl.value;
+        if (cidadeEl) cidadeEl.value = [data.localidade, data.uf].filter(Boolean).join(' - ');
+      } catch(e){
+        errEl.textContent = 'Não consegui buscar esse CEP. Preenche manualmente.';
+      }
     }
 
     function submitCheckout(){
       const nome = document.getElementById('ck-nome').value.trim();
+      const cpf = document.getElementById('ck-cpf').value.trim();
       const telefone = document.getElementById('ck-telefone').value.trim();
-      const endereco = document.getElementById('ck-endereco').value.trim();
+      const cep = document.getElementById('ck-cep').value.trim();
+      const rua = document.getElementById('ck-rua').value.trim();
+      const numero = document.getElementById('ck-numero').value.trim();
       const complemento = document.getElementById('ck-complemento').value.trim();
+      const bairro = document.getElementById('ck-bairro').value.trim();
+      const cidade = document.getElementById('ck-cidade').value.trim();
 
-      if (!nome || !telefone || !endereco){
-        alert('Preenche nome, telefone e endereço pra continuar.');
+      const errCpfEl = document.getElementById('err-cpf');
+      errCpfEl.textContent = '';
+
+      if (!nome || !cpf || !telefone || !cep || !rua || !numero || !bairro || !cidade){
+        alert('Preenche todos os campos pra continuar: nome, CPF, telefone, CEP, rua, número, bairro e cidade.');
+        return;
+      }
+      if (!isValidCPF(cpf)){
+        errCpfEl.textContent = 'CPF inválido. Confere os números.';
         return;
       }
 
@@ -1041,8 +1136,12 @@
       lines.push('');
       lines.push('Dados para entrega:');
       lines.push(`Nome: ${nome}`);
+      lines.push(`CPF: ${cpf}`);
       lines.push(`Telefone: ${telefone}`);
-      lines.push(`Endereço: ${endereco}${complemento ? ' - ' + complemento : ''}`);
+      lines.push(`Endereço: ${rua}, ${numero}${complemento ? ' - ' + complemento : ''}`);
+      lines.push(`Bairro: ${bairro}`);
+      lines.push(`Cidade: ${cidade}`);
+      lines.push(`CEP: ${cep}`);
       lines.push('');
       lines.push('Forma de pagamento: Pix');
 
