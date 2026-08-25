@@ -4,7 +4,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
-<script src="data.js"></script>
 
 <style>
   :root{
@@ -42,9 +41,9 @@
   }
   .header-row{
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    padding: .9rem 1.4rem;
+    padding: .9rem 1.4rem; flex-wrap: wrap;
   }
-  .brand{ display: flex; align-items: center; gap: .55rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .88rem; }
+  .brand{ display: flex; align-items: center; gap: .55rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .88rem; flex-wrap: wrap; }
   .brand .dot{ width: 6px; height: 6px; background: var(--ink); }
   .brand a.back{ font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--graphite); text-decoration: none; margin-left: .6rem; border-bottom: 1px solid transparent; }
   .brand a.back:hover{ border-color: var(--graphite); }
@@ -58,8 +57,14 @@
   .status-pill.edit{ background: var(--ok-bg); color: var(--ok); }
   .status-pill.dirty{ background: var(--danger-bg); color: var(--danger); }
   .status-pill .pdot{ width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .status-pill .spin{
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 2px solid currentColor; border-top-color: transparent;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
 
-  .header-actions{ display: flex; align-items: center; gap: .6rem; }
+  .header-actions{ display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
 
   .btn{
     display: inline-flex; align-items: center; gap: .45rem;
@@ -127,7 +132,7 @@
   .table thead th{
     text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: .08em;
     color: var(--graphite); padding: .5rem .5rem; border-bottom: 1px solid var(--hairline);
-    position: sticky; top: 56px; background: var(--panel);
+    position: sticky; top: 0; background: var(--panel);
   }
   .table tbody tr{ border-bottom: 1px solid var(--hairline); content-visibility: auto; contain-intrinsic-size: 56px; }
   .table tbody tr:hover{ background: var(--stone); }
@@ -161,12 +166,21 @@
 
   .empty-msg{ text-align: center; padding: 3rem 1rem; color: var(--graphite); font-size: .88rem; }
 
-  /* ---------- gate (no file open) ---------- */
+  /* ---------- login gate ---------- */
   .gate{
-    text-align: center; padding: 4.5rem 1.5rem; max-width: 480px; margin: 3rem auto;
+    text-align: center; padding: 4.5rem 1.5rem; max-width: 380px; margin: 3rem auto;
   }
-  .gate h1{ font-size: 1.4rem; font-weight: 300; margin-bottom: .8rem; }
-  .gate p{ color: var(--graphite); font-size: .92rem; margin-bottom: 1.6rem; }
+  .gate h1{ font-size: 1.3rem; font-weight: 300; margin-bottom: .4rem; }
+  .gate p{ color: var(--graphite); font-size: .88rem; margin-bottom: 1.8rem; }
+  .gate .field{ text-align: left; margin-bottom: 1rem; }
+  .gate .field label{ display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--graphite); margin-bottom: .4rem; }
+  .gate .field input{
+    width: 100%; border: 1px solid var(--hairline); border-radius: 4px; padding: .65rem .8rem; font-size: .9rem;
+    background: var(--paper);
+  }
+  .gate .btn{ width: 100%; justify-content: center; padding: .75rem 1rem; margin-top: .4rem; }
+  .gate .error{ color: var(--danger); font-size: .82rem; margin-top: .8rem; min-height: 1.2em; }
+  .loading-msg{ text-align: center; padding: 4.5rem 1.5rem; color: var(--graphite); font-size: .92rem; }
 
   /* ---------- modal ---------- */
   .modal-backdrop{
@@ -197,70 +211,101 @@
   .toast{
     position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%) translateY(10px);
     background: var(--ink); color: var(--paper); padding: .7rem 1.2rem; border-radius: 5px; font-size: .82rem;
-    opacity: 0; pointer-events: none; transition: all .25s ease; z-index: 300;
+    opacity: 0; pointer-events: none; transition: all .25s ease; z-index: 300; max-width: 90vw; text-align: center;
   }
   .toast.show{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 640px){
+    .header-row{ padding: .8rem 1rem; }
+    .wrap{ padding: .9rem; }
+  }
 </style>
 
 <body>
 
-  <header>
-    <div class="header-row">
-      <div class="brand">
-        <span class="dot"></span>
-        Brand Collection <span style="font-weight:400;color:var(--graphite)">Admin</span>
-        <a class="back" href="index.html">← Ver site</a>
-      </div>
-      <div class="header-actions">
-        <span class="status-pill view" id="status-pill"><span class="pdot"></span><span id="status-text">Visualização</span></span>
-        <button class="btn" id="btn-open">Abrir data.js para editar</button>
-        <button class="btn btn-solid" id="btn-save" disabled>Salvar alterações</button>
-      </div>
+  <!-- LOGIN GATE -->
+  <div class="gate" id="login-gate">
+    <h1>Painel de administração</h1>
+    <p>Entre para ver e editar o catálogo do site.</p>
+    <div class="field">
+      <label for="lg-user">Usuário</label>
+      <input type="text" id="lg-user" autocomplete="username">
     </div>
-  </header>
-
-  <div class="wrap" id="app" hidden>
-    <div class="layout">
-      <div class="panel">
-        <h2>Categorias</h2>
-        <div class="cat-list" id="cat-list"></div>
-        <div class="add-cat-row">
-          <input type="text" id="new-cat-input" placeholder="Nova categoria...">
-          <button class="btn btn-sm" id="btn-add-cat">+</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="toolbar">
-          <h2 style="margin:0">Produtos</h2>
-          <input type="text" class="search-input" id="search" placeholder="Buscar produto pelo nome...">
-          <span class="result-tag" id="result-tag"></span>
-          <button class="btn btn-solid btn-sm" id="btn-new-product">+ Adicionar produto</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Preço</th>
-                <th>Estoque</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
-        <div class="empty-msg" id="empty-msg" hidden>Nenhum produto encontrado.</div>
-      </div>
+    <div class="field">
+      <label for="lg-pass">Senha</label>
+      <input type="password" id="lg-pass" autocomplete="current-password">
     </div>
+    <button class="btn btn-solid" id="btn-login">Entrar</button>
+    <div class="error" id="login-error"></div>
   </div>
 
-  <div class="gate" id="gate">
-    <h1>Painel de administração</h1>
-    <p>Abra o arquivo <code>data.js</code> (na mesma pasta deste admin) para ver e editar o catálogo. As alterações são salvas direto nesse arquivo — o site (<code>index.html</code>) lê os mesmos dados automaticamente.</p>
-    <button class="btn btn-solid" id="btn-open-gate">Abrir data.js</button>
+  <!-- TOKEN SETUP (one-time per device) -->
+  <div class="gate" id="token-gate" hidden>
+    <h1>Configurar este dispositivo</h1>
+    <p>Primeira vez usando o admin neste aparelho. Cole o token de acesso (só precisa fazer isso uma vez aqui).</p>
+    <div class="field">
+      <label for="tk-input">Token de acesso</label>
+      <input type="password" id="tk-input" autocomplete="off" placeholder="github_pat_...">
+    </div>
+    <button class="btn btn-solid" id="btn-save-token">Salvar e continuar</button>
+    <div class="error" id="token-error"></div>
+  </div>
+
+  <div id="shell" hidden>
+    <header>
+      <div class="header-row">
+        <div class="brand">
+          <span class="dot"></span>
+          Brand Collection <span style="font-weight:400;color:var(--graphite)">Admin</span>
+          <a class="back" href="index.html">← Ver site</a>
+        </div>
+        <div class="header-actions">
+          <span class="status-pill view" id="status-pill"><span class="pdot"></span><span id="status-text">Conectando...</span></span>
+          <button class="btn btn-solid" id="btn-save" disabled>Salvar alterações</button>
+          <button class="btn btn-ghost btn-sm" id="btn-logout">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="loading-msg" id="loading-msg">Carregando catálogo do site...</div>
+
+    <div class="wrap" id="app" hidden>
+      <div class="layout">
+        <div class="panel">
+          <h2>Categorias</h2>
+          <div class="cat-list" id="cat-list"></div>
+          <div class="add-cat-row">
+            <input type="text" id="new-cat-input" placeholder="Nova categoria...">
+            <button class="btn btn-sm" id="btn-add-cat">+</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <h2 style="margin:0">Produtos</h2>
+            <input type="text" class="search-input" id="search" placeholder="Buscar produto pelo nome...">
+            <span class="result-tag" id="result-tag"></span>
+            <button class="btn btn-solid btn-sm" id="btn-new-product">+ Adicionar produto</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Nome</th>
+                  <th>Categoria</th>
+                  <th>Preço</th>
+                  <th>Estoque</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+          <div class="empty-msg" id="empty-msg" hidden>Nenhum produto encontrado.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Product modal -->
@@ -316,21 +361,32 @@
 (function(){
   "use strict";
 
+  // ---------------- config ----------------
+  const ADMIN_USER = 'angel.alves';
+  const ADMIN_PASS = 'tutu123';
+
+  const GH_OWNER = 'roberthsilva';
+  const GH_REPO = 'roberthsilva';
+  const GH_BRANCH = 'claude/github-pages-website-h5s6r1';
+  const GH_PATH = 'brand-collection-atacado/data.js';
+  let GH_TOKEN = localStorage.getItem('bc_admin_token') || '';
+  const RAW_URL = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}`;
+  const API_BASE = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
+
   const THUMB = 130;
-  let fileHandle = null;      // File System Access API handle (editable mode)
-  let editable = false;
+  let CAT = null;
   let dirty = false;
-  let CAT = null;              // { categories: [...], products: [...] }
-  let activeCatFilter = null;  // null = all
-  let editingProductId = null; // null = creating new
+  let saving = false;
+  let activeCatFilter = null;
+  let editingProductId = null;
 
   const $ = (sel) => document.querySelector(sel);
+  const loginGate = $('#login-gate');
+  const shell = $('#shell');
+  const loadingMsg = $('#loading-msg');
   const app = $('#app');
-  const gate = $('#gate');
   const statusPill = $('#status-pill');
   const statusText = $('#status-text');
-  const btnOpen = $('#btn-open');
-  const btnOpenGate = $('#btn-open-gate');
   const btnSave = $('#btn-save');
   const catList = $('#cat-list');
   const tbody = $('#tbody');
@@ -339,12 +395,11 @@
   const emptyMsg = $('#empty-msg');
   const toastEl = $('#toast');
 
-  const supportsFS = 'showOpenFilePicker' in window;
-
-  function toast(msg){
+  function toast(msg, ms){
     toastEl.textContent = msg;
     toastEl.classList.add('show');
-    setTimeout(() => toastEl.classList.remove('show'), 2200);
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), ms || 2600);
   }
 
   function fmtBRL(v){
@@ -352,87 +407,73 @@
     return 'R$' + Number(v).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?=,))/g, '.');
   }
 
+  // ---------------- login ----------------
+
+  const tokenGate = $('#token-gate');
+
+  function afterLogin(){
+    loginGate.hidden = true;
+    if (!GH_TOKEN){
+      tokenGate.hidden = false;
+      return;
+    }
+    shell.hidden = false;
+    loadFromGitHub();
+  }
+
+  function checkLogin(){
+    if (localStorage.getItem('bc_admin_logged_in') === '1'){
+      afterLogin();
+    }
+  }
+
+  $('#btn-login').addEventListener('click', doLogin);
+  $('#lg-pass').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  $('#lg-user').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+
+  $('#btn-save-token').addEventListener('click', () => {
+    const val = $('#tk-input').value.trim();
+    if (!val){ $('#token-error').textContent = 'Cola o token antes de continuar.'; return; }
+    GH_TOKEN = val;
+    localStorage.setItem('bc_admin_token', val);
+    tokenGate.hidden = true;
+    shell.hidden = false;
+    loadFromGitHub();
+  });
+  $('#tk-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#btn-save-token').click(); });
+
+  function doLogin(){
+    const user = $('#lg-user').value.trim();
+    const pass = $('#lg-pass').value;
+    if (user === ADMIN_USER && pass === ADMIN_PASS){
+      localStorage.setItem('bc_admin_logged_in', '1');
+      $('#login-error').textContent = '';
+      afterLogin();
+    } else {
+      $('#login-error').textContent = 'Usuário ou senha incorretos.';
+    }
+  }
+
+  $('#btn-logout').addEventListener('click', () => {
+    localStorage.removeItem('bc_admin_logged_in');
+    location.reload();
+  });
+
+  // ---------------- status ----------------
+
+  function setStatus(mode, text){
+    statusPill.className = 'status-pill ' + mode;
+    const spinHtml = mode === 'loading' ? '<span class="spin"></span>' : '<span class="pdot"></span>';
+    statusPill.innerHTML = spinHtml + '<span>' + text + '</span>';
+  }
+
   function markDirty(){
     dirty = true;
-    updateStatus();
+    if (!saving) setStatus('dirty', 'Alterações não salvas');
+    btnSave.disabled = false;
   }
 
-  function updateStatus(){
-    if (!editable){
-      statusPill.className = 'status-pill view';
-      statusText.textContent = 'Visualização';
-      btnSave.disabled = true;
-    } else if (dirty){
-      statusPill.className = 'status-pill dirty';
-      statusText.textContent = 'Alterações não salvas';
-      btnSave.disabled = false;
-    } else {
-      statusPill.className = 'status-pill edit';
-      statusText.textContent = 'Editando · salvo';
-      btnSave.disabled = true;
-    }
-  }
-
-  // ---------------- load / open ----------------
-
-  function bootFromWindowData(){
-    if (window.CATALOG_DATA){
-      CAT = window.CATALOG_DATA;
-      app.hidden = false;
-      gate.hidden = true;
-      renderAll();
-    }
-  }
-
-  async function openForEditing(){
-    if (supportsFS){
-      try{
-        const [handle] = await window.showOpenFilePicker({
-          types: [{ description: 'Catálogo (data.js)', accept: { 'text/javascript': ['.js'] } }],
-        });
-        const file = await handle.getFile();
-        const text = await file.text();
-        const parsed = parseDataJs(text);
-        if (!parsed) { toast('Não consegui ler esse arquivo. Selecione o data.js correto.'); return; }
-        fileHandle = handle;
-        CAT = parsed;
-        editable = true;
-        dirty = false;
-        app.hidden = false;
-        gate.hidden = true;
-        renderAll();
-        updateStatus();
-        toast('data.js aberto — edição habilitada');
-      } catch(e){
-        if (e.name !== 'AbortError') console.error(e);
-      }
-    } else {
-      // fallback: plain file input, no write-back handle
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.js';
-      input.onchange = () => {
-        const file = input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          const parsed = parseDataJs(reader.result);
-          if (!parsed) { toast('Não consegui ler esse arquivo.'); return; }
-          fileHandle = null;
-          CAT = parsed;
-          editable = true;
-          dirty = false;
-          app.hidden = false;
-          gate.hidden = true;
-          renderAll();
-          updateStatus();
-          toast('Arquivo carregado. Seu navegador não permite salvar direto — use "Baixar data.js" e substitua o arquivo manualmente.');
-        };
-        reader.readAsText(file);
-      };
-      input.click();
-    }
-  }
+  // ---------------- GitHub load / save ----------------
 
   function parseDataJs(text){
     const marker = 'window.CATALOG_DATA = ';
@@ -443,36 +484,112 @@
     try { return JSON.parse(jsonText); } catch(e){ console.error(e); return null; }
   }
 
-  async function saveChanges(){
-    if (!editable) return;
-    const text = 'window.CATALOG_DATA = ' + JSON.stringify(CAT) + ';\n';
-    if (fileHandle){
-      try{
-        const writable = await fileHandle.createWritable();
-        await writable.write(text);
-        await writable.close();
-        dirty = false;
-        updateStatus();
-        toast('Salvo em data.js');
-      } catch(e){
-        console.error(e);
-        toast('Erro ao salvar. Tenta de novo.');
-      }
-    } else {
-      const blob = new Blob([text], { type: 'text/javascript' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'data.js';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
+  async function loadFromGitHub(){
+    setStatus('loading', 'Carregando catálogo...');
+    try {
+      const res = await fetch(RAW_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const parsed = parseDataJs(text);
+      if (!parsed) throw new Error('Formato inválido');
+      CAT = parsed;
       dirty = false;
-      updateStatus();
-      toast('data.js baixado — substitua o arquivo antigo na pasta do site');
+      loadingMsg.hidden = true;
+      app.hidden = false;
+      renderAll();
+      setStatus('edit', 'Conectado ao site');
+      btnSave.disabled = true;
+    } catch(e){
+      console.error(e);
+      loadingMsg.textContent = 'Não consegui carregar o catálogo. Verifica sua conexão e recarrega a página.';
+      setStatus('dirty', 'Erro ao carregar');
     }
   }
 
-  btnOpen.addEventListener('click', openForEditing);
-  btnOpenGate.addEventListener('click', openForEditing);
+  function utf8ToBase64(str){
+    const bytes = new TextEncoder().encode(str);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk){
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+
+  async function ghApi(path, options){
+    const res = await fetch(API_BASE + path, {
+      ...options,
+      headers: {
+        'Authorization': 'token ' + GH_TOKEN,
+        'Accept': 'application/vnd.github+json',
+        ...(options && options.headers ? options.headers : {}),
+      },
+    });
+    if (!res.ok){
+      const body = await res.text().catch(() => '');
+      throw new Error('GitHub API ' + res.status + ': ' + body.slice(0, 200));
+    }
+    return res.json();
+  }
+
+  async function saveChanges(){
+    if (saving) return;
+    saving = true;
+    btnSave.disabled = true;
+    setStatus('loading', 'Salvando...');
+    try {
+      const text = 'window.CATALOG_DATA = ' + JSON.stringify(CAT) + ';\n';
+
+      const ref = await ghApi(`/git/ref/heads/${encodeURIComponent(GH_BRANCH)}`);
+      const latestCommitSha = ref.object.sha;
+      const commit = await ghApi(`/git/commits/${latestCommitSha}`);
+      const baseTreeSha = commit.tree.sha;
+
+      const blob = await ghApi('/git/blobs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: utf8ToBase64(text), encoding: 'base64' }),
+      });
+
+      const tree = await ghApi('/git/trees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          base_tree: baseTreeSha,
+          tree: [{ path: GH_PATH, mode: '100644', type: 'blob', sha: blob.sha }],
+        }),
+      });
+
+      const newCommit = await ghApi('/git/commits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'Atualização do catálogo via admin',
+          tree: tree.sha,
+          parents: [latestCommitSha],
+        }),
+      });
+
+      await ghApi(`/git/refs/heads/${encodeURIComponent(GH_BRANCH)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sha: newCommit.sha }),
+      });
+
+      dirty = false;
+      setStatus('edit', 'Conectado ao site');
+      btnSave.disabled = true;
+      toast('Salvo! O site atualiza em alguns segundos.');
+    } catch(e){
+      console.error(e);
+      setStatus('dirty', 'Erro ao salvar');
+      btnSave.disabled = false;
+      toast('Não consegui salvar. Tenta de novo em instantes.', 3600);
+    } finally {
+      saving = false;
+    }
+  }
+
   btnSave.addEventListener('click', saveChanges);
 
   // ---------------- categories ----------------
@@ -743,7 +860,7 @@
     closeModal();
     renderCategories();
     renderProducts();
-    toast('Produto salvo. Clique em "Salvar alterações" para gravar no arquivo.');
+    toast('Produto salvo localmente. Clique em "Salvar alterações" para publicar no site.');
   });
 
   $('#btn-delete-product').addEventListener('click', () => {
@@ -774,8 +891,7 @@
     if (dirty){ e.preventDefault(); e.returnValue = ''; }
   });
 
-  bootFromWindowData();
-  updateStatus();
+  checkLogin();
 })();
 </script>
 
