@@ -1,48 +1,39 @@
-# Olá, eu sou Roberth!
+# Roberth Santana
 
-**Data Analytics • Data Engineering • SQL • Python • Automação • Big Data**
+**Engenharia de Dados (Data Engineering) | SQL Server · T-SQL · Python · ETL · APIs REST · RPA · Agentes de IA**
 
-Analista de Dados com experiência em engenharia, manipulação e otimização de grandes volumes
-de dados utilizando Python e SQL Server. Atuação focada em query tuning, automação de processos
-críticos, análise exploratória de dados e desenvolvimento de soluções orientadas à performance,
-consistência e geração de valor para o negócio. Experiência com APIs REST, modelagem e
-automação de rotinas analíticas voltadas à eficiência operacional.
+Trabalho com dados e desenvolvimento de software onde temos como fator principal a performance e confiabilidade da operação: processos SQL Server lentos, cargas manuais sujeitas a erro e integrações que dependem de esforço humano.
 
-# Linguagens & Ferramentas
+Na Certacon, empresa de processamento de informações para o setor contábil:
 
-![Python](https://img.shields.io/badge/Python-212121?style=for-the-badge&logo=python&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-212121?style=for-the-badge&logo=sqlite&logoColor=white)
-![PySpark](https://img.shields.io/badge/PySpark-212121?style=for-the-badge&logo=apachespark&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-212121?style=for-the-badge&logo=pandas&logoColor=white)
-![dbt](https://img.shields.io/badge/dbt-212121?style=for-the-badge&logo=dbt&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-212121?style=for-the-badge&logo=fastapi&logoColor=white)
+- Otimizei um processo crítico em SQL Server de cerca de 96 horas para aproximadamente 1 hora, por meio de diagnóstico de gargalos, e refatoração de stored procedures, usando apenas comandos de inserção para melhoria de performance em ambiente limitado de recursos. Volume: 1,5 bilhões de linhas.
+- Desenvolvi APIs REST em Python (FastAPI e Django) para automatizar processos críticos, reduzindo o tempo de execução de 10 dias para 2h, uma tarefa que exigia 5 colaboradores passou a exigir 1 apenas.
+- Criei robôs de ingestão e processamento em Python que substituíram importações manuais e reduziram em 60% os erros de conversão de tipos, estouro de campos e inconsistências nos dados.
 
+Também trabalho com Firebase (Auth e Firestore), integração de LLMs em aplicações e desenvolvimento. No momento, estou aprofundando a aplicação de modelos de Machine Learning em dados financeiros.
 
-# Banco de Dados & Analytics
+## Stack
 
+**Dados:** 
 ![SQL Server](https://img.shields.io/badge/SQL_Server-808080?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-808080?style=for-the-badge&logo=postgresql&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-808080?style=for-the-badge&logo=mysql&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-808080?style=for-the-badge&logo=supabase&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-212121?style=for-the-badge&logo=pandas&logoColor=white)
 
+**Desenvolvimento:** 
+![Python](https://img.shields.io/badge/Python-212121?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-212121?style=for-the-badge&logo=fastapi&logoColor=white)
+![Django](https://img.shields.io/badge/Django-212121?style=for-the-badge&logo=django&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-212121?style=for-the-badge&logo=sqlalchemy&logoColor=white)
 
-# Engenharia & DevOps
-
-![Databricks](https://img.shields.io/badge/Databricks-000000?style=for-the-badge&logo=databricks&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-000000?style=for-the-badge&logo=docker&logoColor=white)
+**Ferramentas:** 
 ![Git](https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-000000?style=for-the-badge&logo=linux&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-000000?style=for-the-badge&logo=docker&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-000000?style=for-the-badge&logo=firebase&logoColor=white)
+![Databricks](https://img.shields.io/badge/Databricks-000000?style=for-the-badge&logo=databricks&logoColor=white)
 
-
-
-# Entre em contato comigo
+## Contato
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/roberthsantana/)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:roberthsantana07@gmail.com)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/_roberthsilva)
 
-
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=16&pause=1000&color=FF00FF&width=700&separator=%3C&lines=SELECT+*+FROM+performance+WHERE+gargalo+%3D+'query'%3B%3Cbronze+%E2%86%92+silver+%E2%86%92+gold%3Cprint(%22pipeline+quebrou+de+novo%22)%3Cwhile+True%3A+estudar_dados()%3Cquery+rodando+h%C3%A1+96h...%3CEXPLAIN+ANALYZE+salva+vidas%3Cgit+commit+-m+%22agora+vai%22%3CETL+de+dia%2C+debug+de+madrugada%3CDatabricks+%2B+SQL+%2B+Python)](https://git.io/typing-svg)
-
-
-[![Rosa Neon](https://streak-stats.demolab.com?user=roberthsilva&theme=radical&background=0D0010&hide_border=true&fire=FF00FF&ring=FF00FF&currStreakNum=FFFFFF&sideNums=FF6EC7&sideLabels=FFFFFF&dates=FF9FF3)](https://git.io/streak-stats)
+Disponível para oportunidades 100% remotas em engenharia de dados e desenvolvimento Python.
